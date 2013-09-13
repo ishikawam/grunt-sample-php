@@ -23,11 +23,11 @@ module.exports = function(grunt) {
       options: {
         swapPath: '/tmp'
       },
-      all: ['**/*.php']
+      all: ['*/*.php']
     },
     phpcs: {
       application: {
-        dir: 'application'
+        dir: 'wordpress/*.php'
       },
       options: {
         bin: 'phpcs',
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
     watch: {
       phpunit: {
         files: ['**/*.php'],
-        tasks: ['phpunit'],
+        tasks: ['phpunit', 'phplint', 'phpcs'],
       },
     }
   });
