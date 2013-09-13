@@ -8,11 +8,8 @@
   },
   "dependencies": {
     "grunt": "~0.4.1",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-jshint": "~0.6.4",
-    "grunt-contrib-qunit": "~0.2.2",
-    "grunt-contrib-uglify": "~0.2.4",
-    "grunt-contrib-watch": "~0.5.3"
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-phpunit": "~0.3.0"
   },
   "devDependencies": {},
   "scripts": {
@@ -22,8 +19,8 @@
     "type": "git",
     "url": "git://github.com/ishikawam/grunt-sample-php.git"
   },
-  "author": "",
-  "license": "BSD-2-Clause",
+  "author": "Masayuki Ishikawa (http://github.com/ishikawam)",
+  "license": "BSD",
   "bugs": {
     "url": "https://github.com/ishikawam/grunt-sample-php/issues"
   }
