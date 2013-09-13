@@ -13,12 +13,27 @@ module.exports = function(grunt) {
     // Task configuration.
     phpunit: {
       classes: {
-        dir: 'Tests'
+        dir: 'demoTests'
       },
       options: {
-        configuration: 'phpunit.xml',
         colors: true
       },
+    },
+    phplint: {
+      options: {
+        swapPath: '/tmp'
+      },
+      all: ['**/*.php']
+    },
+    phpcs: {
+      application: {
+        dir: 'application'
+      },
+      options: {
+        bin: 'phpcs',
+        standard: 'PEAR',
+        severity: 6
+      }
     },
     watch: {
       phpunit: {
@@ -30,11 +45,12 @@ module.exports = function(grunt) {
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-watch');
-
   grunt.loadNpmTasks('grunt-phpunit');
+  grunt.loadNpmTasks('grunt-phplint');
+  grunt.loadNpmTasks('grunt-phpcs');
 
   // Default task.
   grunt.registerTask('default', 'watch');
-  grunt.registerTask('manual', ['phpunit', 'qunit', 'concat', 'uglify']);
+  grunt.registerTask('manual', ['phpunit', 'phplint', 'phpcs']);
 
 };
