@@ -3,13 +3,6 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    // Metadata.
-    pkg: grunt.file.readJSON('package.json'),
-    banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-      '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
-      '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-      ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     // Task configuration.
     phpunit: {
       classes: {
@@ -26,7 +19,7 @@ module.exports = function(grunt) {
       all: ['*/*.php']
     },
     phpcs: {
-      application: {
+      wordpress: {
         dir: 'wordpress/*.php'
       },
       options: {
@@ -35,22 +28,64 @@ module.exports = function(grunt) {
         severity: 6
       }
     },
+    cssmin: {
+      minify: {
+        expand: true,
+        cwd: 'wordpress/wp-content/themes/original_twentythirteen/',
+        src: ['**/*.css'],
+        dest: 'wordpress/wp-content/themes/twentythirteen/',
+      }
+    },
+    csslint: {
+      lint: {
+        src: ['wordpress/wp-content/themes/original_twentythirteen/**/*.css'],
+      }
+    },
+    uglify: {
+      minify: {
+        expand: true,
+        cwd: 'wordpress/wp-content/themes/original_twentythirteen/',
+        src: ['functions.js'],
+        dest: 'wordpress/wp-content/themes/twentythirteen/',
+      }
+    },
+    jshint: {
+      lint: {
+        src: ['wordpress/wp-content/themes/original_twentythirteen/js/functions.js'],
+      }
+    },
     watch: {
-      phpunit: {
+      php: {
         files: ['**/*.php'],
         tasks: ['phpunit', 'phplint', 'phpcs'],
+      },
+      css: {
+        files: ['wordpress/wp-content/themes/original_twentythirteen/**/*.css'],
+        tasks: ['cssmin', 'csslint'],
+      },
+      js: {
+        files: ['wordpress/wp-content/themes/original_twentythirteen/js/functions.js'],
+        tasks: ['uglify', 'jshint'],
       },
     }
   });
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-watch');
+
+  // PHP関連のタスク
   grunt.loadNpmTasks('grunt-phpunit');
   grunt.loadNpmTasks('grunt-phplint');
   grunt.loadNpmTasks('grunt-phpcs');
 
+  // HTML関連のタスク
+  grunt.loadNpmTasks('grunt-contrib-cssmin');   // cssのミニファイ
+  grunt.loadNpmTasks('grunt-contrib-csslint');  // cssの構文チェック
+  grunt.loadNpmTasks('grunt-contrib-uglify');   // JSのミニファイ
+  grunt.loadNpmTasks('grunt-contrib-jshint');   // JSの構文チェック
+
   // Default task.
   grunt.registerTask('default', 'watch');
-  grunt.registerTask('manual', ['phpunit', 'phplint', 'phpcs']);
+  grunt.registerTask('manual', ['phpunit', 'phplint', 'phpcs', 'cssmin', 'uglify']);
 
 };
